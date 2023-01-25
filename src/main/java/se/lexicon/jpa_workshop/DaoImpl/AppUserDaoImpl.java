@@ -1,9 +1,10 @@
-package DaoImpl;
+package se.lexicon.jpa_workshop.DaoImpl;
 
-import Dao.AppUserDao;
-import Entity.AppUser;
+import se.lexicon.jpa_workshop.Dao.AppUserDao;
+import se.lexicon.jpa_workshop.Entity.AppUser;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import se.lexicon.jpa_workshop.Exception.DataInsufficient;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -26,20 +27,24 @@ public class AppUserDaoImpl implements AppUserDao {
 
     @Override
     @Transactional
-    public AppUser create(AppUser appUser) {
-       entityManager.persist(appUser);
+    public AppUser create(AppUser appUser) throws DataInsufficient {
+        if (appUser == null) throw new DataInsufficient("Data was null");
+        entityManager.persist(appUser);
         return appUser;
     }
 
     @Override
     @Transactional
-    public AppUser update(AppUser appUser) {
+    public AppUser update(AppUser appUser) throws DataInsufficient {
+        if (appUser == null) throw new DataInsufficient("Data was null");
         return entityManager.merge(appUser);
     }
 
     @Override
     @Transactional
-    public void delete(int id) {
-        entityManager.remove(entityManager.find(AppUser.class,id));
+    public void delete(int id) throws DataInsufficient {
+        AppUser appUser =entityManager.find(AppUser.class,id);
+        if (appUser == null) throw new DataInsufficient("Data was null");
+        entityManager.remove(appUser);
     }
 }

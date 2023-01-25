@@ -1,4 +1,4 @@
-package Entity;
+package se.lexicon.jpa_workshop.Entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -10,7 +10,7 @@ public class AppUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id",updatable = false)
     private int appUserId;
-    @Column(nullable = false,length = 100)
+    @Column(nullable = false,length = 100,unique = true)
     private String userName;
     @Column(nullable = false)
     private String password;
