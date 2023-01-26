@@ -39,12 +39,12 @@ int createdAppUser1;
 @Test
     public void persist() {
 Details details = new Details("testemail","testname",LocalDate.parse("2002-04-12"));
-    Book bookData = new Book("Book For Testing",30);
+    Book bookData = new Book("Book For Testing","ISBN CODE",30);
     AppUser appUserData = new AppUser("Test","PasswordTesting",details);
 
     BookLoan bookLoanData =new BookLoan(LocalDate.now().plusDays(bookData.getMaxLoanDays()));
         BookLoan createdBookLoanData = testObject.create(bookLoanData);
-    createdBookLoanData.borrowBook(bookData);
+
     createdBookLoanData.setAppUser(appUserData);
 
 assertNotNull(createdBookLoanData);

@@ -18,11 +18,6 @@ public class Book {
     private String title;
     @Column(nullable = false)
     private int maxLoanDays;
-
-    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.REFRESH})
-    @JoinColumn(name = "AppUser_ID")
-    private BookLoan borrower;
-
     @ManyToMany()
     @JoinTable(name = "authors_Books",
             joinColumns = @JoinColumn(name = "Book_id"),
@@ -31,8 +26,8 @@ public class Book {
     public Book() {
     }
 
-    public Book(String title, int maxLoanDays) {
-       this.isbn = "testCode";
+    public Book(String title,String isbn, int maxLoanDays) {
+       this.isbn = isbn;
         this.title = title;
         this.maxLoanDays = maxLoanDays;
     }
@@ -42,7 +37,7 @@ public class Book {
         this.isbn = isbn;
         this.title = title;
         this.maxLoanDays = maxLoanDays;
-        this.borrower = borrower;
+
     }
 
     public void addAuthor() {
@@ -79,14 +74,6 @@ public class Book {
 
     public void setMaxLoanDays(int maxLoanDays) {
         this.maxLoanDays = maxLoanDays;
-    }
-
-    public BookLoan getBorrower() {
-        return borrower;
-    }
-
-    public void setBorrower(BookLoan borrower) {
-        this.borrower = borrower;
     }
 
     public Set<Author> getAuthors() {

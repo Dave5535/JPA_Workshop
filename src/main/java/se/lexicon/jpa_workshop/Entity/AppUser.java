@@ -20,9 +20,8 @@ public class AppUser {
     @JoinColumn(name = "details_id")
     private Details details;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH,CascadeType.REFRESH,CascadeType.REMOVE})
-    @JoinColumn(name = "BookLoans_Id")
-    private BookLoan borrowedBooks;
+    @OneToMany(mappedBy = "appUser")
+    private List<BookLoan> loans;
 
 
     public AppUser() {
@@ -50,6 +49,24 @@ public class AppUser {
 
         setDetails(details);
     }
+
+public void addBookLoan(BookLoan bookLoan){
+  if (bookLoan == null) throw new IllegalArgumentException("data was null");
+  if (loans == null) loans = new ArrayList<>();
+  loans.add(bookLoan);
+  bookLoan.setAppUser(this);
+
+
+}
+public void removeBookLoan(BookLoan bookLoan){
+    if (bookLoan == null) throw new IllegalArgumentException("data was null");
+    if (loans == null) loans = new ArrayList<>();
+        loans.remove(bookLoan);
+        bookLoan.removeLoan(bookLoan);
+
+}
+
+
 
 
 
@@ -91,12 +108,13 @@ public class AppUser {
         this.details = details;
     }
 
-    public BookLoan getBorrowedBooks() {
-        return borrowedBooks;
+    public List<BookLoan> getLoans() {
+        if (loans == null) loans = new ArrayList<>();
+        return loans;
     }
 
-    public void setBorrowedBooks(BookLoan borrowedBooks) {
-        this.borrowedBooks = borrowedBooks;
+    public void setLoans(List<BookLoan> loans) {
+        this.loans = loans;
     }
 
     @Override

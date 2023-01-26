@@ -60,10 +60,10 @@ creatBook_Author();
                     "test",
                     "testPassword", new Details("Email.com", "Name", LocalDate.parse("2001-01-01"))));
 
-            Book createdtestbook = bookDao.create(new Book("Titel", 30));
+            Book createdtestbook = bookDao.create(new Book("Titel","ISBN CODE", 30));
             BookLoan createdBookLoan = bookLoanDao.create(new BookLoan(LocalDate.now().plusDays(createdtestbook.getMaxLoanDays())));
 
-            createdBookLoan.borrowBook(createdtestbook);
+
             createdBookLoan.setAppUser(createdappUser);
 
         } catch (DataInsufficient e) {
@@ -72,9 +72,9 @@ creatBook_Author();
         System.out.println("########################");
     }
     public void creatBook_Author(){
-        Book createdtestbook = bookDao.create(new Book("Book", 30));
+        Book createdtestbook = bookDao.create(new Book("Book","ISBN CODE", 30));
         BookLoan createdBookLoan = bookLoanDao.create(new BookLoan(LocalDate.now().plusDays(createdtestbook.getMaxLoanDays())));
-        Book createdTestBook2 = bookDao.create(new Book("Book", 50));
+        Book createdTestBook2 = bookDao.create(new Book("Book","ISBN CODE", 50));
         BookLoan createdBookLoan2 = bookLoanDao.create(new BookLoan(LocalDate.now().plusDays(createdTestBook2.getMaxLoanDays())));
 
         Author createdAuthor = authorDao.create(new Author("AuthorFirstName","AuthorLastName"));

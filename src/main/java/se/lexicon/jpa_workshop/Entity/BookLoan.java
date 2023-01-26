@@ -19,10 +19,12 @@ public class BookLoan {
     @Column
     private boolean returned;
 
-    @OneToMany(mappedBy = "borrowedBooks",orphanRemoval = true)
-    private List<AppUser> appUsers;
-    @OneToMany(mappedBy = "borrower",orphanRemoval = true)
-    private List<Book> books;
+    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH,CascadeType.REFRESH,CascadeType.REMOVE})
+    @JoinColumn(name = "details_id")
+    private AppUser appUser;
+    @ManyToOne(cascade ={CascadeType.REFRESH,CascadeType.DETACH } )
+    @JoinColumn(name = "BookLoans_Id")
+    private Book book;
 
     public BookLoan() {
     }
@@ -33,35 +35,13 @@ public class BookLoan {
         this.returned = false;
     }
 
-    public void borrowBook(Book book)  {
-        if (book == null) throw new IllegalArgumentException("Book data was null");
-        if (books == null) books = new ArrayList<>();
-        books.add(book);
-        book.setBorrower(this);
 
-    }
-public void setAppUser(AppUser appUser) {
-        if (appUser == null) throw  new IllegalArgumentException("AppUserData was null");
-        if (appUsers == null) books = new ArrayList<>();
-        appUser.setBorrowedBooks(this);
+public void removeLoan(BookLoan bookLoan){
+if (book == null) throw new IllegalArgumentException("bookLoan was null");
+appUser.getLoans().remove(this);
 
 
 }
-public void overemphasise(AppUser appUser){
-
-
-}
-
-    public void returnBook(Book book)  {
-        if (book == null) throw new IllegalArgumentException("Book data was null");
-        if (books != null){
-            book.setBorrower(null);
-            books.remove(book);
-            this.returned = true;
-        }
-    }
-
-
 
     public int getLoanId() {
         return loanId;
@@ -93,6 +73,14 @@ public void overemphasise(AppUser appUser){
 
     public void setReturned(boolean returned) {
         this.returned = returned;
+    }
+
+    public AppUser getAppUser() {
+        return appUser;
+    }
+
+    public void setAppUser(AppUser appUser) {
+        this.appUser = appUser;
     }
 
     @Override
