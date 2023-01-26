@@ -8,35 +8,50 @@ import java.util.*;
 public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id",updatable = false)
+    @Column(updatable = false)
     private int appUserId;
     @Column(nullable = false,length = 100,unique = true)
     private String userName;
     @Column(nullable = false)
     private String password;
-    @Column
+    @Column(updatable = false)
     private LocalDate regDate;
     @OneToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH,CascadeType.REFRESH,CascadeType.REMOVE})
     @JoinColumn(name = "details_id")
     private Details details;
 
+    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH,CascadeType.REFRESH,CascadeType.REMOVE})
+    @JoinColumn(name = "BookLoans_Id")
+    private BookLoan borrowedBooks;
+
+
     public AppUser() {
+    }
+
+    public AppUser(String userName, String password) {
+        this.userName = userName;
+        this.password = password;
+        this.regDate = LocalDate.now();
+
     }
 
     public AppUser(String userName, String password, Details details) {
         this.userName = userName;
         this.password = password;
         this.regDate = LocalDate.now();
+
         setDetails(details);
     }
 
-    public AppUser(int appUserId, String userName, String password, LocalDate regDate, Details details) {
+    public AppUser(int appUserId, String userName, String password, Details details) {
         this.appUserId = appUserId;
         this.userName = userName;
         this.password = password;
-        this.regDate = LocalDate.now();
+
         setDetails(details);
     }
+
+
 
     public int getAppUserId() {
         return appUserId;
@@ -74,6 +89,14 @@ public class AppUser {
     public void setDetails(Details details) {
        if (details != null) details.setAppUser(this);
         this.details = details;
+    }
+
+    public BookLoan getBorrowedBooks() {
+        return borrowedBooks;
+    }
+
+    public void setBorrowedBooks(BookLoan borrowedBooks) {
+        this.borrowedBooks = borrowedBooks;
     }
 
     @Override
